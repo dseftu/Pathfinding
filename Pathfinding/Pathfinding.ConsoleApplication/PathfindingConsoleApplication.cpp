@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <GridHelper.h>
 #include "BreadthFirstSearch.h"
+#include <IPathFinder.h>
 
 using namespace std;
 using namespace Library;
@@ -16,14 +17,14 @@ int main(int argc, char* argv[])
 
 	Library::Point start = Library::Point(0, 0);
 	std::shared_ptr<Library::Node> startNode = graph.At(start);
-	Library::Point end = Library::Point(0, 5);
+	Library::Point end = Library::Point(9, 9);
 	std::shared_ptr<Library::Node> endNode = graph.At(end);
 	std::set<std::shared_ptr<Library::Node>> closedSet;
 
-	Pathfinding::BreadthFirstSearch search = Pathfinding::BreadthFirstSearch();
 	
-
-	std::deque<std::shared_ptr<Library::Node>> thePath = search.FindPath(startNode, endNode, closedSet);
+	Library::IPathFinder *search = new Pathfinding::BreadthFirstSearch();
+	
+	std::deque<std::shared_ptr<Library::Node>> thePath = search->FindPath(startNode, endNode, closedSet);
     return 0;
 }
 

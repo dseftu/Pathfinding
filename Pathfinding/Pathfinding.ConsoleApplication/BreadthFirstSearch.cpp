@@ -5,13 +5,15 @@
 
 namespace Pathfinding
 {
-
+	BreadthFirstSearch::BreadthFirstSearch()
+	{
+	}
 	std::deque<std::shared_ptr<Library::Node>> Pathfinding::BreadthFirstSearch::FindPath(
 		std::shared_ptr<Library::Node> start, 
 		std::shared_ptr<Library::Node> end, 
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
-
+		
 		// the untamed frontier
 		std::queue<std::shared_ptr<Library::Node>> frontier;
 		

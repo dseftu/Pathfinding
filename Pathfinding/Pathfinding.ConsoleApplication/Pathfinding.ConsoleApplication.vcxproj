@@ -184,6 +184,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BreadthFirstSearch.cpp" />
+    <ClCompile Include="GreedyBestFirstSearch.cpp" />
     <ClCompile Include="IPathHelper.cpp" />
     <ClCompile Include="PathfindingConsoleApplication.cpp" />
     <ClCompile Include="pch.cpp">
@@ -195,6 +196,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BreadthFirstSearch.h" />
+    <ClInclude Include="GreedyBestFirstSearch.h" />
     <ClInclude Include="IPathHelper.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
