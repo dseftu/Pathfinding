@@ -5,9 +5,9 @@
 
 namespace Pathfinding
 {
-	HeuristicsType DijkstrasAlgorithm::GetHeuristicsType()
+	DijkstrasAlgorithm::DijkstrasAlgorithm()
 	{
-		return HeuristicsType::None;
+		SetHeuristicsType(HeuristicsType::None);
 	}
 	std::deque<std::shared_ptr<Library::Node>> Pathfinding::DijkstrasAlgorithm::FindPath(
 		std::shared_ptr<Library::Node> start,

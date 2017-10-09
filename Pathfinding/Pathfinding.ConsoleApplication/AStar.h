@@ -7,7 +7,8 @@ namespace Pathfinding
 	{
 
 	public:
-		virtual HeuristicsType GetHeuristicsType();
+		AStar();
+	private:
 	};
 
 }

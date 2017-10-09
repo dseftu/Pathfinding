@@ -2,8 +2,7 @@
 #include <GridHelper.h>
 #include "BreadthFirstSearch.h"
 #include "GreedyBestFirstSearch.h"
-#include <IPathFinder.h>
-#include "IPathHelper.h"
+
 #include "DijkstrasAlgorithm.h"
 #include "AStar.h"
 
@@ -25,11 +24,17 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Library::Node> endNode = graph.At(end);
 	std::set<std::shared_ptr<Library::Node>> closedSet;
 
-	
-	Library::IPathFinder *search = new Pathfinding::AStar();
-	//static_cast<Pathfinding::GreedyBestFirstSearch*>(search)->SetHeuristicsType(Pathfinding::HeuristicsType::ManhattanDistance);
+	std::shared_ptr<Library::IPathFinder> search = make_shared<Pathfinding::AStar>();	
+	std::deque<std::shared_ptr<Library::Node>> aStar = search->FindPath(startNode, endNode, closedSet);
 
-	std::deque<std::shared_ptr<Library::Node>> thePath = search->FindPath(startNode, endNode, closedSet);
+	search = make_shared<Pathfinding::BreadthFirstSearch>();
+	std::deque<std::shared_ptr<Library::Node>> bfs = search->FindPath(startNode, endNode, closedSet);
+
+	search = make_shared<Pathfinding::GreedyBestFirstSearch>();
+	std::deque<std::shared_ptr<Library::Node>> gbfs = search->FindPath(startNode, endNode, closedSet);
+
+	search = make_shared<Pathfinding::DijkstrasAlgorithm>();
+	std::deque<std::shared_ptr<Library::Node>> dja = search->FindPath(startNode, endNode, closedSet);
     return 0;
 }
 

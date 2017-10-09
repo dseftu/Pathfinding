@@ -62,15 +62,6 @@ namespace Pathfinding
 		return thePath;
 	}
 
-	HeuristicsType GreedyBestFirstSearch::GetHeuristicsType()
-	{
-		return this->heuristicType;
-	}
-
-	void GreedyBestFirstSearch::SetHeuristicsType(HeuristicsType heuristicsType)
-	{
-		this->heuristicType = heuristicsType;
-	}
 
 	
 
