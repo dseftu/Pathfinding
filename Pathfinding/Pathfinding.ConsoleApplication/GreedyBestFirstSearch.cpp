@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GreedyBestFirstSearch.h"
+#include <iostream>
 #include <queue>
 
 
@@ -12,18 +13,22 @@ namespace Pathfinding
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
 		// the untamed frontier
-		std::priority_queue<std::shared_ptr<Library::Node>> frontier;
+		std::priority_queue<std::shared_ptr<Library::Node>, std::vector<std::shared_ptr<Library::Node>>, std::greater<std::shared_ptr<Library::Node>>> frontier;
+		std::set<std::shared_ptr<Library::Node>> frontierSet;
 		
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
-		start->SetHeuristic(0.0f);
+		start->SetHeuristic(CalculateHeuristic(start, end));
 		frontier.push(start);
+		frontierSet.insert(start);
 
 		while (!frontier.empty())
 		{
 			// select the nest node based off of their Heuristics
+
 			std::shared_ptr<Library::Node> currentNode = frontier.top();
 			frontier.pop();
+			frontierSet.erase(currentNode);
 
 			// add to visited set
 			closedSet.insert(currentNode);
@@ -38,9 +43,20 @@ namespace Pathfinding
 				if (IsValidLocation(neighbor, closedSet))
 				{
 					neighbor->SetParent(currentNode);
-					neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
-					frontier.push(neighbor);
+
+					if (frontierSet.find(neighbor) == frontierSet.end())
+					{
+						neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
+						frontier.push(neighbor);
+						frontierSet.insert(neighbor);
+					}					
+				} 
+				else
+				{
+					std::cout << "Not putting (" << neighbor->Location().X << "," << neighbor->Location().Y << ") in frontier\n";
+
 				}
+
 			}
 		}
 

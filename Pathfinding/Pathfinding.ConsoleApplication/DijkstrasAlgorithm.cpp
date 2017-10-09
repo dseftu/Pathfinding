@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DijkstrasAlgorithm.h"
 #include <queue>
+#include <iostream>
 
 
 namespace Pathfinding
@@ -19,7 +20,8 @@ namespace Pathfinding
 
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
-		start->SetHeuristic(0.0f);
+		start->SetHeuristic(CalculateHeuristic(start, end));
+		start->SetPathCost(0.0f);
 		frontier.push(start);
 
 		while (!frontier.empty())
@@ -28,25 +30,47 @@ namespace Pathfinding
 			std::shared_ptr<Library::Node> currentNode = frontier.top();
 			frontier.pop();
 
-			// add to visited set
-			closedSet.insert(currentNode);
-
+			
 			// is this end?
-			if (currentNode == end) break;
+			if (currentNode == end)
+			{
+				// add to visited set
+				closedSet.insert(currentNode);
+				break;
+			}
+			
 
 			// que up the next neighbors
 			for (const auto& weakNeighbor : currentNode->Neighbors())
 			{
 				auto neighbor = weakNeighbor.lock();
-				if (IsValidLocation(neighbor, closedSet))
+				if (!IsWall(neighbor))
 				{
-					neighbor->SetParent(currentNode);
-					neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
-					auto parent = neighbor->Parent().lock();
-					neighbor->SetPathCost(parent->PathCost() + 1.0f);
-					frontier.push(neighbor);
+					// determine path cost					
+					float newPathCost = currentNode->PathCost() + 1.0f;
+					
+					// if in visited and new cost is less or not in visited, do the things
+					bool addToFrontier = false;
+					if (!Visited(neighbor, closedSet)) addToFrontier = true;
+					else if (newPathCost < neighbor->PathCost())
+					{
+						std::cout << "Updated cost of " << neighbor->TotalCost() << " to " << newPathCost << "\n";
+						addToFrontier = true;
+					}
+
+					if (addToFrontier)
+					{
+						neighbor->SetPathCost(newPathCost);
+						neighbor->SetParent(currentNode);
+						neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
+						frontier.push(neighbor);
+					}
+					
 				}
 			}
+
+			// add to visited set
+			closedSet.insert(currentNode);
 		}
 
 		// the end result

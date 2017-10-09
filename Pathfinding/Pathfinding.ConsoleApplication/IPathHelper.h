@@ -5,6 +5,7 @@
 
 namespace Pathfinding
 {
+
 	enum class HeuristicsType
 	{
 		ManhattanDistance,
@@ -25,6 +26,8 @@ namespace Pathfinding
 			Library::Point(1,0),
 			Library::Point(-1,0) };
 		const bool IsValidLocation(std::shared_ptr<Library::Node> node, std::set<std::shared_ptr<Library::Node>> closedSet);
+		const bool IsWall(std::shared_ptr<Library::Node> node);
+		const bool Visited(std::shared_ptr<Library::Node> node, std::set<std::shared_ptr<Library::Node>> closedSet);
 		virtual float CalculateHeuristic(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end);
 		HeuristicsType heuristicType;
 

@@ -7,13 +7,21 @@ namespace Pathfinding
 {
 	IPathHelper::IPathHelper()
 	{
-		SetHeuristicsType(HeuristicsType::EuclidianDistance);
+		SetHeuristicsType(HeuristicsType::ManhattanDistance);
 	}
 
 	const bool Pathfinding::IPathHelper::IsValidLocation(std::shared_ptr<Library::Node> node, std::set<std::shared_ptr<Library::Node>> closedSet)
 	{
 		// this determines if the node is normal and not in the closed set
-		return (node->Type() == Library::NodeType::Normal) && (closedSet.find(node) == closedSet.end());
+		return !IsWall(node) && !Visited(node, closedSet);
+	}
+	const bool IPathHelper::IsWall(std::shared_ptr<Library::Node> node)
+	{
+		return (node->Type() == Library::NodeType::Wall);
+	}
+	const bool IPathHelper::Visited(std::shared_ptr<Library::Node> node, std::set<std::shared_ptr<Library::Node>> closedSet)
+	{
+		return (closedSet.find(node) != closedSet.end());
 	}
 	float IPathHelper::CalculateHeuristic(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
 	{
