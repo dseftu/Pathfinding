@@ -1,19 +1,22 @@
 #include "pch.h"
-#include "GreedyBestFirstSearch.h"
+#include "DijkstrasAlgorithm.h"
 #include <queue>
 
 
 namespace Pathfinding
 {
-
-	std::deque<std::shared_ptr<Library::Node>> Pathfinding::GreedyBestFirstSearch::FindPath(
+	HeuristicsType DijkstrasAlgorithm::GetHeuristicsType()
+	{
+		return HeuristicsType::None;
+	}
+	std::deque<std::shared_ptr<Library::Node>> Pathfinding::DijkstrasAlgorithm::FindPath(
 		std::shared_ptr<Library::Node> start,
 		std::shared_ptr<Library::Node> end,
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
 		// the untamed frontier
 		std::priority_queue<std::shared_ptr<Library::Node>> frontier;
-		
+
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
 		start->SetHeuristic(0.0f);
@@ -39,6 +42,8 @@ namespace Pathfinding
 				{
 					neighbor->SetParent(currentNode);
 					neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
+					auto parent = neighbor->Parent().lock();
+					neighbor->SetPathCost(parent->PathCost() + 1.0f);
 					frontier.push(neighbor);
 				}
 			}
@@ -61,17 +66,4 @@ namespace Pathfinding
 
 		return thePath;
 	}
-
-	HeuristicsType GreedyBestFirstSearch::GetHeuristicsType()
-	{
-		return this->heuristicType;
-	}
-
-	void GreedyBestFirstSearch::SetHeuristicsType(HeuristicsType heuristicsType)
-	{
-		this->heuristicType = heuristicsType;
-	}
-
-	
-
 }

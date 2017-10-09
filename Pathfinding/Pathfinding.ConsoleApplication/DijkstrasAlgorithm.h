@@ -4,13 +4,13 @@
 
 namespace Pathfinding
 {
-	class GreedyBestFirstSearch : public Library::IPathFinder, public Pathfinding::IPathHelper
+	class DijkstrasAlgorithm : public Library::IPathFinder, public Pathfinding::IPathHelper
 	{
 
 	public:
+		virtual HeuristicsType GetHeuristicsType();
 		virtual std::deque<std::shared_ptr<Library::Node>> FindPath(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end, std::set<std::shared_ptr<Library::Node>>& closedSet) override;
-		HeuristicsType GetHeuristicsType();
-		void SetHeuristicsType(HeuristicsType heuristicsType);
+
 	private:
 	};
 

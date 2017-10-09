@@ -4,6 +4,8 @@
 #include "GreedyBestFirstSearch.h"
 #include <IPathFinder.h>
 #include "IPathHelper.h"
+#include "DijkstrasAlgorithm.h"
+#include "AStar.h"
 
 using namespace std;
 using namespace Library;
@@ -17,16 +19,16 @@ int main(int argc, char* argv[])
 	int32_t graphHeight;
 	Graph graph = GridHelper::LoadGridFromFile(filename, graphWidth, graphHeight);
 
-	Library::Point start = Library::Point(0, 0);
+	Library::Point start = Library::Point(0, 6);
 	std::shared_ptr<Library::Node> startNode = graph.At(start);
 	Library::Point end = Library::Point(9, 9);
 	std::shared_ptr<Library::Node> endNode = graph.At(end);
 	std::set<std::shared_ptr<Library::Node>> closedSet;
 
 	
-	Library::IPathFinder *search = new Pathfinding::GreedyBestFirstSearch();
-	
-	
+	Library::IPathFinder *search = new Pathfinding::AStar();
+	//static_cast<Pathfinding::GreedyBestFirstSearch*>(search)->SetHeuristicsType(Pathfinding::HeuristicsType::ManhattanDistance);
+
 	std::deque<std::shared_ptr<Library::Node>> thePath = search->FindPath(startNode, endNode, closedSet);
     return 0;
 }

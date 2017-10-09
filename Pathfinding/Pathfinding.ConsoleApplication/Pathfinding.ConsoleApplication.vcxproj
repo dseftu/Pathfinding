@@ -183,7 +183,9 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="BreadthFirstSearch.cpp" />
+    <ClCompile Include="DijkstrasAlgorithm.cpp" />
     <ClCompile Include="GreedyBestFirstSearch.cpp" />
     <ClCompile Include="IPathHelper.cpp" />
     <ClCompile Include="PathfindingConsoleApplication.cpp" />
@@ -195,7 +197,9 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AStar.h" />
     <ClInclude Include="BreadthFirstSearch.h" />
+    <ClInclude Include="DijkstrasAlgorithm.h" />
     <ClInclude Include="GreedyBestFirstSearch.h" />
     <ClInclude Include="IPathHelper.h" />
     <ClInclude Include="pch.h" />
