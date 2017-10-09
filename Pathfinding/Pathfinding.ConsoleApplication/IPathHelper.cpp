@@ -15,7 +15,7 @@ namespace Pathfinding
 		// this determines if the node is normal and not in the closed set
 		return (node->Type() == Library::NodeType::Normal) && (closedSet.find(node) == closedSet.end());
 	}
-	double IPathHelper::CalculateHeuristic(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
+	float IPathHelper::CalculateHeuristic(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
 	{
 		if (this->GetHeuristicsType() == HeuristicsType::ManhattanDistance)
 		{
@@ -39,15 +39,15 @@ namespace Pathfinding
 	{
 		this->heuristicType = heuristicsType;
 	}
-	double IPathHelper::CalculateManhattanDistance(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
+	float IPathHelper::CalculateManhattanDistance(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
 	{			
-		return std::abs(start->Location().X - end->Location().X) + std::abs(start->Location().Y - end->Location().Y);
+		return float(std::abs(start->Location().X - end->Location().X) + std::abs(start->Location().Y - end->Location().Y));
 		
 	}
-	double IPathHelper::CalculateEuclidianDistance(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
+	float IPathHelper::CalculateEuclidianDistance(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
 	{
-		double a = std::abs(start->Location().X - end->Location().X);
-		double b = std::abs(start->Location().Y - end->Location().Y);
-		return std::sqrt(std::pow(a, 2.0) + std::pow(b, 2.0));
+		float a = float(std::abs(start->Location().X - end->Location().X));
+		float b = float(std::abs(start->Location().Y - end->Location().Y));
+		return float(std::sqrt(std::pow(a, 2.0) + std::pow(b, 2.0)));
 	}
 }

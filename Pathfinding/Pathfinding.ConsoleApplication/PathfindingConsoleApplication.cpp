@@ -1,7 +1,9 @@
 #include "pch.h"
 #include <GridHelper.h>
 #include "BreadthFirstSearch.h"
+#include "GreedyBestFirstSearch.h"
 #include <IPathFinder.h>
+#include "IPathHelper.h"
 
 using namespace std;
 using namespace Library;
@@ -22,7 +24,8 @@ int main(int argc, char* argv[])
 	std::set<std::shared_ptr<Library::Node>> closedSet;
 
 	
-	Library::IPathFinder *search = new Pathfinding::BreadthFirstSearch();
+	Library::IPathFinder *search = new Pathfinding::GreedyBestFirstSearch();
+	
 	
 	std::deque<std::shared_ptr<Library::Node>> thePath = search->FindPath(startNode, endNode, closedSet);
     return 0;
