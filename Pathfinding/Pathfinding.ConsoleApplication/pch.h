@@ -94,6 +94,7 @@
 #include "ContentManager.h"
 #include "MathHelper.h"
 #include "EventArgs.h"
+#include "ImGuiComponent.h"
 
 // Library.Desktop
 #include "UtilityWin32.h"

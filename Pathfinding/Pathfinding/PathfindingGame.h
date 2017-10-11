@@ -1,7 +1,5 @@
 #pragma once
-
 #include "Game.h"
-#include "Rectangle.h"
 
 namespace Library
 {
@@ -23,11 +21,11 @@ namespace Pathfinding
 
 	private:
 		void Exit();
+		
+		static DirectX::XMVECTORF32 BackgroundColor;
 
-		static const DirectX::XMVECTORF32 BackgroundColor;
-
-		std::shared_ptr<Library::AudioEngineComponent> mAudio;
 		std::shared_ptr<Library::KeyboardComponent> mKeyboard;
+		std::shared_ptr<Library::ImGuiComponent> mImGui;
 		
 	};
 }

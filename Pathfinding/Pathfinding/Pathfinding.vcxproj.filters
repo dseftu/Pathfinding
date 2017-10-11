@@ -64,12 +64,29 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="..\Content\Grid.grid">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Content\NoPathGrid.grid">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Content\End.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Content\Ground.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Content\Path.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Content\Start.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Content\Wall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
