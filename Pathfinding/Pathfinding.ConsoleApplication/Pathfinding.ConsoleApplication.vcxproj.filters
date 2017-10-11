@@ -62,10 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Content\Grid.grid">
+    <None Include="..\Content\Grid.grid">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Content\NoPathGrid.grid">
+    <None Include="..\Content\NoPathGrid.grid">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

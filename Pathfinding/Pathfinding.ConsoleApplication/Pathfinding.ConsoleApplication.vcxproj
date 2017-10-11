@@ -108,7 +108,7 @@
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(OutDir)Content"
-xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
+xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,7 +128,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(OutDir)Content"
-xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
+xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,7 +152,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(OutDir)Content"
-xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
+xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -176,7 +176,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(OutDir)Content"
-xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
+xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -205,8 +205,8 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Grid.grid" />
-    <None Include="Content\NoPathGrid.grid" />
+    <None Include="..\Content\Grid.grid" />
+    <None Include="..\Content\NoPathGrid.grid" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

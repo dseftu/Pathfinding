@@ -49,7 +49,7 @@ void DrawGrid(int32_t graphWidth, int32_t graphHeight, std::shared_ptr<Library::
 int main(int argc, char* argv[])
 {
 	// Pathfinding.ConsoleApplication.exe Grid.grid
-	string filename = (argc == 2 ? argv[1] : "Content\\Grid.grid");
+	string filename = (argc == 2 ? argv[1] : ".\\Content\\Grid.grid");
 	
 	int32_t graphWidth;
 	int32_t graphHeight;
