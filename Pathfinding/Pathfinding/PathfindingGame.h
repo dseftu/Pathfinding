@@ -3,6 +3,7 @@
 #include <vector>
 #include <GridHelper.h>
 #include "Tile.h"
+#include <set>
 
 namespace Library
 {
@@ -28,6 +29,8 @@ namespace Pathfinding
 		virtual void Shutdown() override;
 		virtual void Update(const Library::GameTime& gameTime) override;		
 		virtual void Draw(const Library::GameTime& gameTime) override;
+	protected:
+
 
 	private:
 		void Exit();
@@ -43,6 +46,14 @@ namespace Pathfinding
 		int32_t mGraphHeight;
 		Library::Point mStartPoint = Library::Point(0,6);
 		Library::Point mEndPoint = Library::Point(9, 2);
+		Algorithm mAlgorithm = Algorithm::BreadthFirstSearch;
+		void ChangeAlgorithm();
+		int32_t mNumberVisited = 0;
+
+		std::string mNumberVisitedText = "0";
+		std::string mAlgorithmName = "Breadth-First Search";
+
+		std::deque<std::shared_ptr<Library::Node>> thePath;
 		
 	};
 }

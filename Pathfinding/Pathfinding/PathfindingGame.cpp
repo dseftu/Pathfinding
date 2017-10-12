@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "PathfindingGame.h"
+#include <IPathFinder.h>
 #include "Rectangle.h"
-
+#include "..\Pathfinding.ConsoleApplication\BreadthFirstSearch.h"
+#include "..\Pathfinding.ConsoleApplication\AStar.h"
+#include "..\Pathfinding.ConsoleApplication\DijkstrasAlgorithm.h"
+#include "..\Pathfinding.ConsoleApplication\GreedyBestFirstSearch.h"
+#include <tchar.h>
 
 //#include <iostream>
 #include <ImGui\imgui_impl_dx11.h>
@@ -49,7 +54,10 @@ namespace Pathfinding
 			ImGui::Text("Current grid: ");
 			ImGui::Text("Current start: ");
 			ImGui::Text("Current end: ");
+			
+			ImGui::Text(mAlgorithmName.c_str());
 			if (ImGui::Button("Redraw Grid")) DrawGrid();
+			if (ImGui::Button("Change Algorithm")) ChangeAlgorithm();
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		});
@@ -72,9 +80,40 @@ namespace Pathfinding
 			}
 		}
 		
-		
-		string filename = ".\\Content\\Grid.grid";
+		string filename = ".\\Content\\NoPathGrid.grid";
 		mGraph = GridHelper::LoadGridFromFile(filename, mGraphWidth, mGraphHeight);
+		std::set<std::shared_ptr<Library::Node>> closedSet;
+		std::shared_ptr<Library::Node> startNode = mGraph.At(mStartPoint);
+		std::shared_ptr<Library::Node> endNode = mGraph.At(mEndPoint);
+		std::shared_ptr<Library::IPathFinder> search;
+		switch (mAlgorithm)
+		{
+		case (Algorithm::BreadthFirstSearch):
+		{
+			search = make_shared<Pathfinding::BreadthFirstSearch>();
+			break;
+		}
+		case (Algorithm::GreedyBestFirst):
+		{
+			search = make_shared<Pathfinding::GreedyBestFirstSearch>();
+			break;
+		}
+		case (Algorithm::Dijkstras):
+		{
+			search = make_shared<Pathfinding::DijkstrasAlgorithm>();
+			break;
+		}
+		case (Algorithm::AStar):
+		{
+			search = make_shared<Pathfinding::AStar>();
+			break;
+		}
+		}
+		
+		thePath.clear();
+		thePath = search->FindPath(startNode, endNode, closedSet);
+		mNumberVisited = closedSet.size();		
+		
 
 		for (int32_t x = 0; x < mGraphWidth; x++)
 		{
@@ -90,6 +129,10 @@ namespace Pathfinding
 				{
 					mTile = make_shared<Tile>(*this, TileType::End);
 				}
+				else if (std::find(thePath.begin(), thePath.end(), mGraph.At(x, y)) != thePath.end())
+				{
+					mTile = make_shared<Tile>(*this, TileType::Path);
+				}
 				else if (mGraph.At(x, y)->Type() == Library::NodeType::Wall)
 				{
 					mTile = make_shared<Tile>(*this, TileType::Wall);
@@ -99,7 +142,7 @@ namespace Pathfinding
 					mTile = make_shared<Tile>(*this, TileType::Ground);
 				}
 
-				mTile->SetBounds((mTile->Bounds().Width + 5)*x + 150, (mTile->Bounds().Height + 5)*y + 150);
+				mTile->SetBounds((mTile->Bounds().Width + 5)*x + 20, (mTile->Bounds().Height + 5)*y + 20);
 				mComponents.push_back(mTile);
 			}
 		}
@@ -144,6 +187,38 @@ namespace Pathfinding
 	void PathfindingGame::Exit()
 	{
 		PostQuitMessage(0);
+	}
+
+	void PathfindingGame::ChangeAlgorithm()
+	{
+		switch (mAlgorithm)
+		{
+			case (Algorithm::BreadthFirstSearch):
+			{
+				mAlgorithmName = "Greedy Best First";
+				mAlgorithm = Algorithm::GreedyBestFirst;
+				break;
+			}
+			case (Algorithm::GreedyBestFirst):
+			{
+				mAlgorithmName = "Dijkstras";
+				mAlgorithm = Algorithm::Dijkstras;
+				break;
+			}
+			case (Algorithm::Dijkstras):
+			{
+				mAlgorithmName = "A*";
+				mAlgorithm = Algorithm::AStar;
+				break;
+			}
+			case (Algorithm::AStar):
+			{
+				mAlgorithmName = "Breadth First Search";
+				mAlgorithm = Algorithm::BreadthFirstSearch;
+				break;
+			}
+		}
+		DrawGrid();
 	}
 
 }

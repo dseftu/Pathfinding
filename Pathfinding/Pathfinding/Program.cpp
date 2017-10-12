@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	UNREFERENCED_PARAMETER(previousInstance);
 	UNREFERENCED_PARAMETER(commandLine);
 
-	const SIZE RenderTargetSize = { 800, 600 };
+	const SIZE RenderTargetSize = { 800, 400 };
 
 	SetCurrentDirectory(UtilityWin32::ExecutableDirectory().c_str());
 
