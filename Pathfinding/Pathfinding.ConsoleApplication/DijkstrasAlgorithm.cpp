@@ -16,19 +16,20 @@ namespace Pathfinding
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
 		// the untamed frontier
-		std::priority_queue<std::shared_ptr<Library::Node>> frontier;
+		std::deque<std::shared_ptr<Library::Node>> frontier;
 
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
 		start->SetHeuristic(CalculateHeuristic(start, end));
 		start->SetPathCost(0.0f);
-		frontier.push(start);
+		frontier.push_back(start);
 
 		while (!frontier.empty())
 		{
 			// select the nest node based off of their Heuristics
-			std::shared_ptr<Library::Node> currentNode = frontier.top();
-			frontier.pop();
+			std::sort(frontier.begin(), frontier.end(), [](const std::shared_ptr<Library::Node> lhs, const std::shared_ptr<Library::Node> rhs) { return lhs->TotalCost() < rhs->TotalCost(); });
+			std::shared_ptr<Library::Node> currentNode = frontier.front();
+			frontier.pop_front();
 
 			
 			// is this end?
@@ -63,7 +64,7 @@ namespace Pathfinding
 						neighbor->SetPathCost(newPathCost);
 						neighbor->SetParent(currentNode);
 						neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
-						frontier.push(neighbor);
+						frontier.push_back(neighbor);
 					}
 					
 				}

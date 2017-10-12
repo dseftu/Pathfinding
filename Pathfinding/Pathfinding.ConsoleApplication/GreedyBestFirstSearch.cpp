@@ -13,22 +13,21 @@ namespace Pathfinding
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
 		// the untamed frontier
-		std::priority_queue<std::shared_ptr<Library::Node>, std::vector<std::shared_ptr<Library::Node>>, std::greater<std::shared_ptr<Library::Node>>> frontier;
-		std::set<std::shared_ptr<Library::Node>> frontierSet;
+		//std::priority_queue<std::shared_ptr<Library::Node>, std::vector<std::shared_ptr<Library::Node>>, std::greater<std::shared_ptr<Library::Node>>> frontier;
+		std::deque<std::shared_ptr<Library::Node>> frontier;
+		//std::set<std::shared_ptr<Library::Node>> frontierSet;
 		
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
 		start->SetHeuristic(CalculateHeuristic(start, end));
-		frontier.push(start);
-		frontierSet.insert(start);
+		frontier.push_back(start);
 
 		while (!frontier.empty())
 		{
 			// select the nest node based off of their Heuristics
-
-			std::shared_ptr<Library::Node> currentNode = frontier.top();
-			frontier.pop();
-			frontierSet.erase(currentNode);
+			std::sort(frontier.begin(), frontier.end(), [](const std::shared_ptr<Library::Node> lhs, const std::shared_ptr<Library::Node> rhs) { return lhs->TotalCost() < rhs->TotalCost(); });
+			std::shared_ptr<Library::Node> currentNode = frontier.front();
+			frontier.pop_front();
 
 			// add to visited set
 			closedSet.insert(currentNode);
@@ -44,11 +43,10 @@ namespace Pathfinding
 				{
 					neighbor->SetParent(currentNode);
 
-					if (frontierSet.find(neighbor) == frontierSet.end())
+					if (std::find(frontier.begin(), frontier.end(), neighbor) == frontier.end())
 					{
 						neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
-						frontier.push(neighbor);
-						frontierSet.insert(neighbor);
+						frontier.push_back(neighbor);
 					}					
 				} 
 				else

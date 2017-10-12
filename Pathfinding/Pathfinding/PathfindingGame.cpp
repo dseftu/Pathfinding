@@ -80,7 +80,7 @@ namespace Pathfinding
 			}
 		}
 		
-		string filename = ".\\Content\\NoPathGrid.grid";
+		string filename = ".\\Content\\Grid.grid";
 		mGraph = GridHelper::LoadGridFromFile(filename, mGraphWidth, mGraphHeight);
 		std::set<std::shared_ptr<Library::Node>> closedSet;
 		std::shared_ptr<Library::Node> startNode = mGraph.At(mStartPoint);
