@@ -1,7 +1,11 @@
 #include "pch.h"
 #include "PathfindingGame.h"
-
 #include "Rectangle.h"
+
+
+//#include <iostream>
+#include <ImGui\imgui_impl_dx11.h>
+
 
 using namespace std;
 using namespace DirectX;
@@ -26,12 +30,15 @@ namespace Pathfinding
 		mKeyboard = make_shared<KeyboardComponent>(*this);
 		mComponents.push_back(mKeyboard);
 		mServices.AddService(KeyboardComponent::TypeIdClass(), mKeyboard.get());
-
+		
 		mImGui = make_shared<ImGuiComponent>(*this);
 		mComponents.push_back(mImGui);
 		mServices.AddService(ImGuiComponent::TypeIdClass(), mImGui.get());
 		auto imGuiWndProcHandler = make_shared<UtilityWin32::WndProcHandler>(ImGui_ImplDX11_WndProcHandler);
 		UtilityWin32::AddWndProcHandler(imGuiWndProcHandler);
+
+		DrawGrid();
+		
 
 		// 1. Show a simple window
 		// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
@@ -42,6 +49,7 @@ namespace Pathfinding
 			ImGui::Text("Current grid: ");
 			ImGui::Text("Current start: ");
 			ImGui::Text("Current end: ");
+			if (ImGui::Button("Redraw Grid")) DrawGrid();
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		});
@@ -50,6 +58,51 @@ namespace Pathfinding
 		srand((unsigned int)time(NULL));	
 
 		Game::Initialize();
+	}
+
+	void PathfindingGame::DrawGrid()
+	{
+		for (int32_t i = mComponents.size()-1; i >= 0; i--)
+		{
+			if (mComponents.back()->ToString() == "Tile")
+			{
+				mComponents.back()->Shutdown();
+				mComponents.back() = nullptr;
+				mComponents.erase(mComponents.begin() + i);
+			}
+		}
+		
+		
+		string filename = ".\\Content\\Grid.grid";
+		mGraph = GridHelper::LoadGridFromFile(filename, mGraphWidth, mGraphHeight);
+
+		for (int32_t x = 0; x < mGraphWidth; x++)
+		{
+			for (int32_t y = 0; y < mGraphHeight; y++)
+			{
+				std::shared_ptr<Tile> mTile;
+
+				if (mStartPoint.X == x && mStartPoint.Y == y)
+				{
+					mTile = make_shared<Tile>(*this, TileType::Start);
+				}
+				else if (mEndPoint.X == x && mEndPoint.Y == y)
+				{
+					mTile = make_shared<Tile>(*this, TileType::End);
+				}
+				else if (mGraph.At(x, y)->Type() == Library::NodeType::Wall)
+				{
+					mTile = make_shared<Tile>(*this, TileType::Wall);
+				}
+				else
+				{
+					mTile = make_shared<Tile>(*this, TileType::Ground);
+				}
+
+				mTile->SetBounds((mTile->Bounds().Width + 5)*x + 150, (mTile->Bounds().Height + 5)*y + 150);
+				mComponents.push_back(mTile);
+			}
+		}
 	}
 
 	void PathfindingGame::Shutdown()
@@ -64,6 +117,7 @@ namespace Pathfinding
 		{
 			Exit();
 		}
+		
 		Game::Update(gameTime);
 	}
 

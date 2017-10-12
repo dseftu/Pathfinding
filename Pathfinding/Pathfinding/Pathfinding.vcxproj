@@ -177,13 +177,13 @@ xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
     <ClCompile Include="..\Pathfinding.ConsoleApplication\DijkstrasAlgorithm.cpp" />
     <ClCompile Include="..\Pathfinding.ConsoleApplication\GreedyBestFirstSearch.cpp" />
     <ClCompile Include="..\Pathfinding.ConsoleApplication\IPathHelper.cpp" />
-    <ClCompile Include="..\Pathfinding.ConsoleApplication\pch.cpp">
+    <ClCompile Include="PathfindingGame.cpp" />
+    <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="PathfindingGame.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Pathfinding.ConsoleApplication\AStar.h" />
@@ -191,8 +191,9 @@ xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
     <ClInclude Include="..\Pathfinding.ConsoleApplication\DijkstrasAlgorithm.h" />
     <ClInclude Include="..\Pathfinding.ConsoleApplication\GreedyBestFirstSearch.h" />
     <ClInclude Include="..\Pathfinding.ConsoleApplication\IPathHelper.h" />
-    <ClInclude Include="..\Pathfinding.ConsoleApplication\pch.h" />
     <ClInclude Include="PathfindingGame.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Content\Grid.grid" />
