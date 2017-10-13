@@ -51,13 +51,29 @@ namespace Pathfinding
 		{
 			ImGui::Begin("Input Controls");
 			static float f = 0.0f;
-			ImGui::Text("Current grid: ");
-			ImGui::Text("Current start: ");
-			ImGui::Text("Current end: ");
+
+			// display info about the currently displayed grid
+			ImGui::Text(("Current grid: " + mGridName).c_str());
+			ImGui::Text(("Current start: (" + std::to_string(mStartPoint.X) + "," + std::to_string(mStartPoint.Y) + ")").c_str());
+			ImGui::Text(("Current end: (" + std::to_string(mEndPoint.X) + "," + std::to_string(mEndPoint.Y) + ")").c_str());
+
+			// Display algorithm name
+			std::string algorithmText = "Current algorithm: ";
+			algorithmText += mAlgorithmName;			
+			ImGui::Text(("Current algorithm: " + mAlgorithmName).c_str());
 			
-			ImGui::Text(mAlgorithmName.c_str());
-			if (ImGui::Button("Redraw Grid")) DrawGrid();
+			// options for changing the algorithm
+			if (ImGui::Button("Redraw Grid/Repeat Search")) DrawGrid();
 			if (ImGui::Button("Change Algorithm")) ChangeAlgorithm();
+			if (mAlgorithm == Algorithm::GreedyBestFirst || mAlgorithm == Algorithm::AStar)
+			{
+				ImGui::Text(("Current heuristic: " + mAlgorithmHeuristic).c_str());
+				if (ImGui::Button("Change Heuristic")) ChangeAlgorithmHeuristic();
+			}
+			// runtime evaluations
+			ImGui::Text(("Last run time (ms): " + std::to_string(mTimeToComputeInMs)).c_str());
+			ImGui::Text(("Nodes visited: " + std::to_string(mNumberVisited)).c_str());
+			
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		});
@@ -80,7 +96,7 @@ namespace Pathfinding
 			}
 		}
 		
-		string filename = ".\\Content\\Grid.grid";
+		string filename = ".\\Content\\" + mGridName;
 		mGraph = GridHelper::LoadGridFromFile(filename, mGraphWidth, mGraphHeight);
 		std::set<std::shared_ptr<Library::Node>> closedSet;
 		std::shared_ptr<Library::Node> startNode = mGraph.At(mStartPoint);
@@ -111,8 +127,14 @@ namespace Pathfinding
 		}
 		
 		thePath.clear();
+		auto startTime = std::chrono::high_resolution_clock::now();
 		thePath = search->FindPath(startNode, endNode, closedSet);
-		mNumberVisited = closedSet.size();		
+		auto endTime = std::chrono::high_resolution_clock::now();
+		auto totalTimeElapsed = endTime - startTime;
+		mTimeToComputeInMs = std::chrono::duration_cast<std::chrono::milliseconds>(totalTimeElapsed).count();
+		
+		mNumberVisited = closedSet.size();
+		
 		
 
 		for (int32_t x = 0; x < mGraphWidth; x++)
@@ -219,6 +241,10 @@ namespace Pathfinding
 			}
 		}
 		DrawGrid();
+	}
+
+	void PathfindingGame::ChangeAlgorithmHeuristic()
+	{
 	}
 
 }

@@ -19,6 +19,7 @@ namespace Pathfinding
 		Dijkstras = 3,
 		AStar = 4,
 	};
+
 	class PathfindingGame : public Library::Game
 	{
 	public:
@@ -48,10 +49,15 @@ namespace Pathfinding
 		Library::Point mEndPoint = Library::Point(9, 2);
 		Algorithm mAlgorithm = Algorithm::BreadthFirstSearch;
 		void ChangeAlgorithm();
+		void ChangeAlgorithmHeuristic();
 		int32_t mNumberVisited = 0;
+		int64_t mTimeToComputeInMs = 0;
 
 		std::string mNumberVisitedText = "0";
 		std::string mAlgorithmName = "Breadth-First Search";
+		std::string mGridName = "Grid.grid";
+		std::string mAlgorithmHeuristic = "Manhattan Distance";
+		
 
 		std::deque<std::shared_ptr<Library::Node>> thePath;
 		
