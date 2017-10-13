@@ -38,7 +38,11 @@ namespace Pathfinding
 		// controls window
 		auto sampleImGuiRenderBlock1 = make_shared<ImGuiComponent::RenderBlock>([this]()
 		{
+			XMFLOAT2 tempViewportSize(mViewport.Width, mViewport.Height);
+			XMVECTOR viewportSize = XMLoadFloat2(&tempViewportSize);
+
 			ImGui::SetNextWindowPos(ImVec2(0, 0));
+			ImGui::SetNextWindowSize(ImVec2(mViewport.Width/2, mViewport.Height));
 			ImGui::Begin("Input Controls");
 			static float f = 0.0f;
 
@@ -49,7 +53,7 @@ namespace Pathfinding
 			ImGui::Text(("End: (" + std::to_string(mEndPoint.X) + "," + std::to_string(mEndPoint.Y) + ")").c_str());
 			ImGui::Text("Adjust Positions: ");
 			ImGui::SameLine();
-			ImGui::SliderInt4("", &mStartPoint.X, 0, mGraphWidth-1);
+			if (ImGui::SliderInt4("", &mStartPoint.X, 0, mGraphWidth - 1) && ValidNodePositions()) DrawGrid();
 
 			if (!ValidNodePositions()) 
 			{				
@@ -173,6 +177,7 @@ namespace Pathfinding
 
 	void PathfindingGame::ConstructTiles()
 	{
+
 		// actually draw the thing
 		for (int32_t x = 0; x < mGraphWidth; x++)
 		{
