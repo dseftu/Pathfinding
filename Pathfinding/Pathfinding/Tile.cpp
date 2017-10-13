@@ -26,8 +26,6 @@ namespace Pathfinding
 		mY = y;		
 	}
 
-
-
 	void Tile::Initialize()
 	{
 		

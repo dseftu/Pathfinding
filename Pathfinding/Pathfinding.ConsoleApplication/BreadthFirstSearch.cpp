@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "BreadthFirstSearch.h"
-#include <queue>
-
 
 namespace Pathfinding
 {

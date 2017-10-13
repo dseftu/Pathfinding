@@ -2,6 +2,7 @@
 #include <IPathFinder.h>
 #include "IPathHelper.h"
 
+
 namespace Pathfinding
 {
 	class BreadthFirstSearch : public Library::IPathFinder, public Pathfinding::IPathHelper

@@ -8,4 +8,8 @@ namespace Pathfinding
 	{
 		SetHeuristicsType(HeuristicsType::EuclidianDistance);
 	}
+	AStar::AStar(HeuristicsType heuristicsType)
+	{
+		SetHeuristicsType(heuristicsType);
+	}
 }

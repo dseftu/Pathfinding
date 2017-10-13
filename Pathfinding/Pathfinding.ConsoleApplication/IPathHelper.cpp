@@ -7,7 +7,7 @@ namespace Pathfinding
 {
 	IPathHelper::IPathHelper()
 	{
-		SetHeuristicsType(HeuristicsType::ManhattanDistance);
+		SetHeuristicsType(HeuristicsType::None);
 	}
 
 	const bool Pathfinding::IPathHelper::IsValidLocation(std::shared_ptr<Library::Node> node, std::set<std::shared_ptr<Library::Node>> closedSet)
@@ -41,11 +41,11 @@ namespace Pathfinding
 	}
 	HeuristicsType IPathHelper::GetHeuristicsType()
 	{
-		return this->heuristicType;
+		return mHeuristicType;
 	}
 	void IPathHelper::SetHeuristicsType(HeuristicsType heuristicsType)
 	{
-		this->heuristicType = heuristicsType;
+		mHeuristicType = heuristicsType;
 	}
 	float IPathHelper::CalculateManhattanDistance(std::shared_ptr<Library::Node> start, std::shared_ptr<Library::Node> end)
 	{			

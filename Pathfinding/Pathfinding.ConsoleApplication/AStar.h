@@ -8,6 +8,7 @@ namespace Pathfinding
 
 	public:
 		AStar();
+		AStar(HeuristicsType heuristicsType);
 	private:
 	};
 

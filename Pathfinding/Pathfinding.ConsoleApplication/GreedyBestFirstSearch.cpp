@@ -1,11 +1,16 @@
 #include "pch.h"
 #include "GreedyBestFirstSearch.h"
-#include <iostream>
-#include <queue>
-
 
 namespace Pathfinding
 {
+	GreedyBestFirstSearch::GreedyBestFirstSearch()
+	{
+		SetHeuristicsType(HeuristicsType::ManhattanDistance);
+	}
+	GreedyBestFirstSearch::GreedyBestFirstSearch(HeuristicsType heuristicsType)
+	{
+		SetHeuristicsType(heuristicsType);
+	}
 
 	std::deque<std::shared_ptr<Library::Node>> Pathfinding::GreedyBestFirstSearch::FindPath(
 		std::shared_ptr<Library::Node> start,
@@ -13,22 +18,22 @@ namespace Pathfinding
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
 		// the untamed frontier
-		//std::priority_queue<std::shared_ptr<Library::Node>, std::vector<std::shared_ptr<Library::Node>>, std::greater<std::shared_ptr<Library::Node>>> frontier;
-		std::deque<std::shared_ptr<Library::Node>> frontier;
-		//std::set<std::shared_ptr<Library::Node>> frontierSet;
-		
+		std::vector<std::shared_ptr<Library::Node>> frontier;
+		std::make_heap(frontier.begin(), frontier.end());
+				
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
 		start->SetHeuristic(CalculateHeuristic(start, end));
 		frontier.push_back(start);
+		std::push_heap(frontier.begin(), frontier.end(), valueComp);
 
 		while (!frontier.empty())
 		{
-			// select the nest node based off of their Heuristics
-			std::sort(frontier.begin(), frontier.end(), [](const std::shared_ptr<Library::Node> lhs, const std::shared_ptr<Library::Node> rhs) { return lhs->TotalCost() < rhs->TotalCost(); });
-			std::shared_ptr<Library::Node> currentNode = frontier.front();
-			frontier.pop_front();
-
+			// select the best node based off of their Heuristics
+			std::pop_heap(frontier.begin(), frontier.end(), valueComp);			
+			auto currentNode = frontier.back();
+			frontier.pop_back();	
+			
 			// add to visited set
 			closedSet.insert(currentNode);
 
@@ -43,18 +48,18 @@ namespace Pathfinding
 				{
 					neighbor->SetParent(currentNode);
 
+					// check to see if we've already added this node to the frontier
 					if (std::find(frontier.begin(), frontier.end(), neighbor) == frontier.end())
 					{
 						neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
 						frontier.push_back(neighbor);
+						std::push_heap(frontier.begin(), frontier.end(), valueComp);
 					}					
 				} 
 				else
 				{
 					std::cout << "Not putting (" << neighbor->Location().X << "," << neighbor->Location().Y << ") in frontier\n";
-
 				}
-
 			}
 		}
 
@@ -64,6 +69,7 @@ namespace Pathfinding
 		// see if we found the end node
 		if (closedSet.find(end) != closedSet.end())
 		{
+			// we found it!  Let's follow the breadcrumbs and build the path.
 			std::shared_ptr<Library::Node> currentNode = end;
 
 			while (currentNode->Parent().lock() != nullptr)
@@ -75,8 +81,5 @@ namespace Pathfinding
 
 		return thePath;
 	}
-
-
-	
 
 }

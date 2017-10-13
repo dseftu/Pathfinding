@@ -1,36 +1,32 @@
 #include "pch.h"
 #include "DijkstrasAlgorithm.h"
-#include <queue>
-#include <iostream>
 
 
 namespace Pathfinding
 {
-	DijkstrasAlgorithm::DijkstrasAlgorithm()
-	{
-		SetHeuristicsType(HeuristicsType::None);
-	}
 	std::deque<std::shared_ptr<Library::Node>> Pathfinding::DijkstrasAlgorithm::FindPath(
 		std::shared_ptr<Library::Node> start,
 		std::shared_ptr<Library::Node> end,
 		std::set<std::shared_ptr<Library::Node>>& closedSet)
 	{
 		// the untamed frontier
-		std::deque<std::shared_ptr<Library::Node>> frontier;
+		std::vector<std::shared_ptr<Library::Node>> frontier;
+		std::make_heap(frontier.begin(), frontier.end());
 
 		// adding the start node to the frontier
 		start->SetParent(nullptr);
 		start->SetHeuristic(CalculateHeuristic(start, end));
 		start->SetPathCost(0.0f);
 		frontier.push_back(start);
+		std::push_heap(frontier.begin(), frontier.end(), valueComp);
+
 
 		while (!frontier.empty())
 		{
-			// select the nest node based off of their Heuristics
-			std::sort(frontier.begin(), frontier.end(), [](const std::shared_ptr<Library::Node> lhs, const std::shared_ptr<Library::Node> rhs) { return lhs->TotalCost() < rhs->TotalCost(); });
-			std::shared_ptr<Library::Node> currentNode = frontier.front();
-			frontier.pop_front();
-
+			// select the best node based off of their Heuristics
+			std::pop_heap(frontier.begin(), frontier.end(), valueComp);
+			auto currentNode = frontier.back();
+			frontier.pop_back();
 			
 			// is this end?
 			if (currentNode == end)
@@ -51,20 +47,22 @@ namespace Pathfinding
 					float newPathCost = currentNode->PathCost() + 1.0f;
 					
 					// if in visited and new cost is less or not in visited, do the things
-					bool addToFrontier = false;
-					if (!Visited(neighbor, closedSet)) addToFrontier = true;
-					else if (newPathCost < neighbor->PathCost())
-					{
-						std::cout << "Updated cost of " << neighbor->TotalCost() << " to " << newPathCost << "\n";
-						addToFrontier = true;
-					}
-
-					if (addToFrontier)
+					if (!Visited(neighbor, closedSet) || newPathCost < neighbor->PathCost()) 
 					{
 						neighbor->SetPathCost(newPathCost);
 						neighbor->SetParent(currentNode);
 						neighbor->SetHeuristic(CalculateHeuristic(neighbor, end));
-						frontier.push_back(neighbor);
+
+						if (std::find(frontier.begin(), frontier.end(), neighbor) == frontier.end())
+						{
+							frontier.push_back(neighbor);
+							std::push_heap(frontier.begin(), frontier.end(), valueComp);
+						}
+						else
+						{
+							std::make_heap(frontier.begin(), frontier.end(), valueComp);
+						}
+
 					}
 					
 				}
