@@ -38,6 +38,7 @@ namespace Pathfinding
 		// controls window
 		auto sampleImGuiRenderBlock1 = make_shared<ImGuiComponent::RenderBlock>([this]()
 		{
+			ImGui::SetNextWindowPos(ImVec2(0, 0));
 			ImGui::Begin("Input Controls");
 			static float f = 0.0f;
 
@@ -48,7 +49,7 @@ namespace Pathfinding
 			ImGui::Text(("End: (" + std::to_string(mEndPoint.X) + "," + std::to_string(mEndPoint.Y) + ")").c_str());
 			ImGui::Text("Adjust Positions: ");
 			ImGui::SameLine();
-			ImGui::SliderInt4("", &mStartPoint.X, 0, 10);
+			ImGui::SliderInt4("", &mStartPoint.X, 0, mGraphWidth-1);
 
 			if (!ValidNodePositions()) 
 			{				
@@ -69,6 +70,11 @@ namespace Pathfinding
 				}
 				ImGui::Text("");
 			}
+			if (!mPathFound)
+			{
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "No path found!");
+			}
+
 
 			// Display algorithm name
 			std::string algorithmText = "Current algorithm: ";
@@ -147,6 +153,8 @@ namespace Pathfinding
 		// same evaluation results
 		mTimeToComputeInMs = std::chrono::duration_cast<std::chrono::milliseconds>(totalTimeElapsed).count();
 		mNumberVisited = closedSet.size();
+		if (thePath.size() == 0) mPathFound = false;
+		else mPathFound = true;
 	}
 
 	void PathfindingGame::ClearOutOldTiles()
@@ -193,7 +201,7 @@ namespace Pathfinding
 					mTile = make_shared<Tile>(*this, TileType::Ground);
 				}
 
-				mTile->SetBounds((mTile->Bounds().Width + 5)*x + 20, (mTile->Bounds().Height + 5)*y + 20);
+				mTile->SetBounds((mTile->Bounds().Width + 5)*x + 450, (mTile->Bounds().Height + 5)*y + 20);
 				mComponents.push_back(mTile);
 			}
 		}

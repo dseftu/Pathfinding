@@ -42,8 +42,12 @@ namespace Pathfinding
 		virtual void Draw(const Library::GameTime& gameTime) override;	
 		
 	private:
-		// ***** CHANGE THIS TO CHANGE THE DRAWN GRID ***** //
+		// ***** CHANGE THIS TO CHANGE THE GRID ***** //
 		std::string mGridName = "Grid.grid";
+		//std::string mGridName = "NoPathGrid.grid";
+		//std::string mGridName = "SuperGrid.grid";
+		Library::Point mStartPoint = Library::Point(0, 6);
+		Library::Point mEndPoint = Library::Point(9, 2);
 
 		void Exit();
 		bool ValidNodePositions();
@@ -56,19 +60,17 @@ namespace Pathfinding
 		Library::Graph mGraph;
 		int32_t mGraphWidth;
 		int32_t mGraphHeight;
-		Library::Point mStartPoint = Library::Point(0,6);
-		Library::Point mEndPoint = Library::Point(9, 2);
-		Algorithm mAlgorithm = Algorithm::BreadthFirstSearch;
 		
 		void ChangeAlgorithm();
 		void ChangeAlgorithmHeuristic();
 		int32_t mNumberVisited = 0;
 		int64_t mTimeToComputeInMs = 0;
 		HeuristicsType mHeuristicsType = HeuristicsType::ManhattanDistance;
-
+		Algorithm mAlgorithm = Algorithm::BreadthFirstSearch;
 		std::string mNumberVisitedText = "0";
 		std::string mAlgorithmName = "Breadth-First Search";		
-		std::string mAlgorithmHeuristicName = "Manhattan Distance";		
+		std::string mAlgorithmHeuristicName = "Manhattan Distance";
+		bool mPathFound = true;
 
 		std::deque<std::shared_ptr<Library::Node>> thePath;		
 	};

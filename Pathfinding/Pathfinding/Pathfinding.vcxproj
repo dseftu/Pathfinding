@@ -198,6 +198,7 @@ xcopy /E /Y "$(SolutionDir)Content" "$(OutDir)Content"</Command>
   <ItemGroup>
     <None Include="..\Content\Grid.grid" />
     <None Include="..\Content\NoPathGrid.grid" />
+    <None Include="..\Content\SuperGrid.grid" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

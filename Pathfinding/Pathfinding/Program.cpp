@@ -1,3 +1,7 @@
+// Pathfinding "Game", Author David M Allen
+// 10/13/2017
+// Visualization of various pathfinding algorithms
+
 #include "pch.h"
 #include "PathfindingGame.h"
 
